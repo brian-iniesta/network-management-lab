@@ -1,0 +1,20 @@
+﻿0. Tạo thư mục, chia sẻ thử mục trên, thư mục này chứa file cần cài đặt
+1. Tạo OU
+2. Đặt tên OU là NhanSu
+3. Add User cho OU trên
+4. Điền thông tin user
+5. Bị thừa
+6. Phải chuột => chọn Properties
+7. Chuyển qua Tab: Group Policy
+8. Bấm New và điền thông tin như hình
+9. Bấm Edit
+10. Cửa số "Group Policy Object Editor" hiển thị ra như hình, đi tới: User Configuration => Software Installation
+11. Phải chuột lên: Software Installation và Chọn "New" => "Package..."
+12. Duyệt tới file cần cài đặt trong thư mục software(thư mục ở bước 0)
+13. Chọn "Assigned" và OK để hoàn tất
+13. Chọn "Advanced", nhảy ra hộp thoại, bấm "Install software after logon" (Quên chưa chụp hình, bữa nào chụp gởi sau)
+
+Sau khi cấu hình xong ở phía server, Vào Start >> CMD >> run gõ lệnh gpupdate /force để thực thi chính sách
+
+==
+Xong

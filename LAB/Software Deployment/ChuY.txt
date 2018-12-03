@@ -1,0 +1,5 @@
+﻿- XP Client phải join vào domain
+- Chi tiết cấu hình ở thư mục Configure
+- Quan trọng: Sau khi cấu hình xong ở phía server, Vào Start >> CMD >> run gõ lệnh gpupdate /force để thực thi chính sách
+- Đăng nhập trên User domain(User thuộc OU được tạo trên máy server)
+Sau khi đăng nhập chương trình sẽ tự động đăng nhập(như các hình 1,2,3)

@@ -1,0 +1,489 @@
+
+<!-- saved from url=(0094)http://luan.nhatnghe.vn/VPN/Enabling%20DHCP%20Relay%20for%20ISA%20Firewall%20VPN%20Clients.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+<meta name="Generator" content="Microsoft Word 11 (filtered)">
+<title>Enabling DHCP Relay for ISA Firewall VPN Clients</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page Section1
+	{size:612.0pt 792.0pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang="EN-US" link="blue" vlink="purple">
+
+<div class="Section1">
+
+<p class="MsoNormal"><b><span lang="EN" style="font-size:18.0pt;color:red">Enabling
+DHCP Relay for ISA Firewall VPN Clients</span></b></p>
+
+<p class="MsoNormal">&nbsp;</p>
+
+<p class="MsoNormal" style="margin-left:54.0pt;text-indent:-36.0pt"><b><span style="font-size:14.0pt">I.<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></b><b>Mô Hình</b>:</p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><img width="576" height="149" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image001.gif"></p>
+
+<p class="MsoNormal" style="margin-left:54.0pt;text-indent:-36.0pt"><b><span style="font-size:14.0pt">II.<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></b><b>Gi&#7899;i Thi&#7879;u:</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><span style="color:black">VPN
+(Virtual Private Network) là gi&#7843;i pháp h&#7919;u hi&#7879;u &#273;&#7875;
+k&#7871;t n&#7889;i các h&#7879; th&#7889;ng m&#7841;ng c&#7911;a&nbsp;doanh
+nghi&#7879;p&nbsp;có nhi&#7873;u chi nhánh và n&#7857;m khác v&#7883; trí
+&#273;&#7883;a lý ho&#7863;c&nbsp;doanh nghi&#7879;p&nbsp;c&#7911;a b&#7841;n
+có nhi&#7873;u nhân viên ph&#7843;i th&#432;&#7901;ng xuyên &#273;i công tác xa
+và h&#7885; mu&#7889;n truy c&#7853;p vào tài nguyên m&#7841;ng n&#7897;i
+b&#7897;.&nbsp;&#272;&#7875;&nbsp;&#273;áp&nbsp;&#7913;ng các nhu c&#7847;u
+trên,trong ph&#7847;n bài lab này tôi s&#7869; trình bày cách&nbsp;c&#7845;u
+hình VPN Client to Gateway thông qua ISA Server 2006 s&#7917; d&#7909;ng: </span><b><span style="color:red">DHCP Relay Agent &#273;&#7875; c&#7845;p IP Wan cho VPN
+Client</span></b><span style="color:black">.</span></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><span style="color:black">&nbsp;</span></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>Các b&#432;&#7899;c tri&#7875;n
+khai g&#7891;m:</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>&nbsp;</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>Domain Controller:</b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>T&#7841;o Users, c&#7845;p quy&#7873;n Allow Access.</p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Cài DHCP Server: t&#7841;o Scope.</p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>ISA Server:</b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Enable VPN Client to Gateway.</p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>T&#7841;o Access Rule.</p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Tri&#7875;n khai DHCP Relay Agent.</p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>VPN Client:</b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>T&#7841;o k&#7871;t n&#7889;i VPN.</p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Truy c&#7853;p và ki&#7875;m tra<b>.</b></p>
+
+<p class="MsoNormal" style="margin-left:54.0pt;text-indent:-36.0pt"><b><span style="font-size:14.0pt">III.<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></b><b>Tri&#7875;n khai chi ti&#7871;t:</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>Domain Controller:</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">- M&#7903; Active Directory Users
+and Computer: t&#7841;o OU <b>vpnclient. </b>Trong OU<b> vpnclient </b>t&#7841;o
+User:<b> nhatnghe </b>Password: 123.</p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="464" height="283" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image002.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>- </b>Properties User<b>
+nhatnghe &gt; </b>Tab<b> Dial-in </b>&gt;<b> </b>Check vào<b> Allow access &gt;
+OK.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="404" height="484" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image003.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">- Vào<b> Add Remove program &gt;
+Add remove Windows Components &gt; </b>Ch&#7885;n<b> Networking Services </b>(Ch&#7885;n
+<b>Details</b>) &gt; Check vào <b>Dynamic Host Configuration Protocol</b> &gt;
+OK.</p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="576" height="432" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image004.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Sau khi cài &#273;&#7863;t hoàn t&#7845;t vào DHCP t&#7841;o Scope:</p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>IP Address Range:</p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">Start IP Add: 172.16.11.200</p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">End IP Add: 172.16.11.250</p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">Length: 24</p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">Subnet Mask: 255.255.255.0</p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">003: 172.16.11.1 (Default
+Gateway)</p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">006: 172.16.11.2 (DNS Server)</p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">015: nhom11.com (Domain Name)</p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="576" height="260" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image005.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>ISA</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">- M&#7903; ISA Server Management
+&gt; Ch&#7885;n <b>Define Address Assignment </b>&#7903; <b>Tasks Paint.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="576" height="412" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image006.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>H&#7897;p tho&#7841;i <b>Virtual Private Network (VPN) Properties</b>
+&gt; Tab <b>Address Assignment</b> &gt; Ch&#7885;n <b>Dynamic Host
+Configuration Protocol (DHCP) &gt; OK. </b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Ch&#7885;n <b>APPLY.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="404" height="448" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image007.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>M&#7903; ISA Server Management &gt; Ch&#7885;n Enable VPN Client Access.</p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Ch&#7885;n <b>APPLY.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="576" height="412" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image008.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">- M&#7903; ISA Server Management
+&gt; Click ph&#7843;i <b>Firewall Policy</b> &gt; <b>New</b> &gt; <b>Access
+Rule…</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="576" height="412" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image009.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>- </b>Access rule name: <b>DHCP
+Reply &gt; Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image010.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>- H&#7897;p tho&#7841;i Rule
+Action &gt; Ch&#7885;n Allow &gt; Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image011.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><b>H&#7897;p tho&#7841;i Protocol &gt; Ch&#7885;n Add.</b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><b>H&#7897;p tho&#7841;i Add Protocol &gt; Ch&#7885;n DHCP(reply) &gt;
+ch&#7885;n Add &gt; Close.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="269" height="418" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image012.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>- Ki&#7875;m tra &gt; Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image013.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><b>H&#7897;p tho&#7841;i Access Rule Sources &gt; Ch&#7885;n Add.</b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><b>H&#7897;p tho&#7841;i Add Network Entities &gt; Ch&#7885;n Internal &gt;
+ch&#7885;n Add &gt; Close.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="269" height="418" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image014.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>- Ki&#7875;m tra &gt; Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image015.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><b>H&#7897;p tho&#7841;i Access Rule Destinations &gt; ch&#7885;n Add.</b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><b>H&#7897;p tho&#7841;i Add Network Entities &gt; Ch&#7885;n VPN Client
+&gt; Ch&#7885;n Add &gt; Close.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="269" height="418" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image016.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>- Ki&#7875;m tra &gt; Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image017.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>H&#7897;p tho&#7841;i User
+Sets &gt; Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image018.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>- Ch&#7885;n Finish.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image019.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>M&#7903; ISA Server Management &gt; Click ph&#7843;i <b>Firewall Policy</b>
+&gt; <b>New</b> &gt; <b>Access Rule…</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>- </b>Access rule name: <b>DHCP
+Request &gt; Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image020.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">- H&#7897;p tho&#7841;i<b> Rule
+Action &gt; </b>Ch&#7885;n<b> Allow &gt; Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image011.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>H&#7897;p tho&#7841;i<b> Protocol &gt; </b>Ch&#7885;n<b> Add.</b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>H&#7897;p tho&#7841;i<b> Add Protocol &gt; </b>Ch&#7885;n<b>
+DHCP(request) &gt; Add &gt; Close.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="269" height="418" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image012.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>- </b>Ki&#7875;m tra &gt;<b>
+Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image021.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>H&#7897;p tho&#7841;i<b> Access Rule Sources </b>&gt; Ch&#7885;n<b> Add.</b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>H&#7897;p tho&#7841;i<b> Add Network Entities &gt; </b>Ch&#7885;n<b> VPN
+Clients </b>&gt; Ch&#7885;n<b> Add &gt; Close.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="269" height="418" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image022.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>- </b>Ki&#7875;m tra &gt;<b>
+Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image023.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>H&#7897;p tho&#7841;i<b> Access Rule Destinations </b>&gt; Ch&#7885;n<b>
+Add.</b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>H&#7897;p tho&#7841;i<b> Add Network Entities </b>&gt; Ch&#7885;n<b>
+Local Host &gt; </b>Ch&#7885;n<b> Add &gt; Close.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="269" height="418" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image024.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">- Ki&#7875;m tra &gt;<b> Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image025.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">- H&#7897;p tho&#7841;i<b> User
+Sets &gt; Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image018.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">- Ch&#7885;n<b> Finish.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image026.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>M&#7903; ISA Server Management &gt; Click ph&#7843;i <b>Firewall Policy</b>
+&gt; <b>New</b> &gt; <b>Access Rule…</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>- </b>Access rule name: <b>VPN
+Client Access &gt; Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image027.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">- H&#7897;p tho&#7841;i<b> Rule
+Action &gt; </b>Ch&#7885;n <b>Allow &gt; Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image011.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>H&#7897;p tho&#7841;i<b> Protocol &gt; </b>Ch&#7885;n<b> All outbound
+traffic &gt; Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image028.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>H&#7897;p tho&#7841;i<b> Access Rule Sources &gt;</b> Ch&#7885;n<b> Add.</b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>H&#7897;p tho&#7841;i<b> Add Network Entities &gt;</b> Ch&#7885;n<b> VPN
+Clients &gt; </b>Ch&#7885;n<b> Add &gt; Close.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="269" height="418" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image022.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>- </b>Ki&#7875;m tra &gt;<b>
+Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image023.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>H&#7897;p tho&#7841;i<b> Access Rule Destinations &gt; </b>Ch&#7885;n <b>Add.</b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>H&#7897;p tho&#7841;i<b> Add Network Entities &gt; </b>Ch&#7885;n<b>
+Internal &gt; </b>Ch&#7885;n<b> Add &gt; Close.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="269" height="418" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image029.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>- </b>Ki&#7875;m tra &gt;<b>
+Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image030.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>- </b>H&#7897;p tho&#7841;i<b>
+User Sets &gt; </b>Ch&#7885;n<b> Next.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image018.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>-</b> Ch&#7885;n<b> Finish.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="503" height="386" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image031.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">- Ki&#7875;m tra &#273;&#7843;m
+b&#7843;o có 3 Rule nh&#432; hình.</p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="575" height="277" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image032.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">- M&#7903;<b> Routing and Remote
+Access.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="576" height="432" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image033.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">- M&#7903;<b> IP Routing &gt; </b>Click
+ph&#7843;i<b> General&nbsp; &gt; New Routing Protocol…</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="576" height="407" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image034.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>- </b>H&#7897;p tho&#7841;i<b>
+New Routing protocol </b>&gt; Ch&#7885;n<b> DHCP Relay Agent &gt; OK.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="384" height="379" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image035.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">- Click ph&#7843;i<b> DHCP Relay
+Agent </b>&gt; Ch&#7885;n<b> Properties.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="576" height="407" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image036.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">- H&#7897;p tho&#7841;i<b> DHCP
+Relay Agent properties &gt; </b>dòng <b>Server Address </b>nh&#7853;p <b>172.16.11.2
+&gt; Add &gt; OK.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="404" height="448" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image037.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>- </b>Click ph&#7843;i<b> DHCP
+Relay Agent &gt; </b>Ch&#7885;n<b> New Interface…</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="576" height="407" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image038.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b>- </b>H&#7897;p tho&#7841;i<b>
+New Interface for DHCP Relay Agent &gt; </b>Ch&#7885;n<b> Internal &gt; OK.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="384" height="379" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image039.jpg"></b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">- Ch&#7885;n<b> OK.</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt"><b><img width="404" height="448" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image040.jpg"></b></p>
+
+<p class="MsoNormal"><b><span style="font-size:14.0pt">VPN Client</span></b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Click ph&#7843;i <b>My Network Place</b> &gt; ch&#7885;n <b>Properties.</b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Ch&#7885;n <b>Create&nbsp; a new connection.</b></p>
+
+<p class="MsoNormal"><img width="576" height="301" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image041.jpg"></p>
+
+<p class="MsoNormal">- Ch&#7885;n <b>Next.</b></p>
+
+<p class="MsoNormal"><img width="503" height="392" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image042.jpg"></p>
+
+<p class="MsoNormal">- Ch&#7885;n <b>Connect to the network at my workplace &gt;
+Next.</b></p>
+
+<p class="MsoNormal"><img width="503" height="392" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image043.jpg"></p>
+
+<p class="MsoNormal">- Ch&#7885;n <b>Virtual Private Network connection</b> &gt;
+Ch&#7885;n <b>Next</b>.</p>
+
+<p class="MsoNormal"><img width="503" height="392" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image044.jpg"></p>
+
+<p class="MsoNormal">- Company Name: <b>Cty Nhatnghe</b> &gt; Ch&#7885;n <b>Next.</b></p>
+
+<p class="MsoNormal"><img width="503" height="392" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image045.jpg"></p>
+
+<p class="MsoNormal">- Host name or IP address: <b>192.168.14.11 (</b>&#273;&#7883;a
+ch&#7881; card Lan c&#7911;a ISA) &gt; Ch&#7885;n <b>Next.</b></p>
+
+<p class="MsoNormal"><img width="503" height="392" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image046.jpg"></p>
+
+<p class="MsoNormal">- Check vào <b>Add a shortcut to …</b> &gt; Ch&#7885;n <b>Finish.</b></p>
+
+<p class="MsoNormal"><img width="503" height="392" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image047.jpg"></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>User name: <b>nhatnghe</b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Password: <b>123</b></p>
+
+<p class="MsoNormal" style="margin-left:18.0pt">Ch&#7885;n <b>Connect.</b></p>
+
+<p class="MsoNormal"><img width="348" height="372" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image048.jpg"></p>
+
+<p class="MsoNormal">- K&#7871;t n&#7889;i thành công.</p>
+
+<p class="MsoNormal"><img width="576" height="365" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image049.jpg"></p>
+
+<p class="MsoNormal">- Click ph&#7843;i bi&#7875;u t&#432;&#7907;ng k&#7871;t
+n&#7889;i ch&#7885;n <b>Status.</b></p>
+
+<p class="MsoNormal"><img width="576" height="365" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image050.jpg"></p>
+
+<p class="MsoNormal">- Ki&#7875;m tra Wan IP &#273;&#432;&#7907;c c&#7845;p
+t&#7921; &#273;&#7897;ng t&#7915; DHCP Server.</p>
+
+<p class="MsoNormal"><img width="367" height="450" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image051.jpg"></p>
+
+<p class="MsoNormal">- M&#7903; CMD gõ: <b>ipconfig /all </b>ki&#7875;m tra.</p>
+
+<p class="MsoNormal"><img width="575" height="291" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image052.jpg"></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>VPN Client vào Start &gt; Run gõ : <b><a href="file://172.16.11.2/"><span style="color:windowtext">\\172.16.11.2</span></a>.</b></p>
+
+<p class="MsoNormal" style="margin-left:36.0pt;text-indent:-18.0pt">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Ki&#7875;m tra vào &#273;&#432;&#7907;c <b>File Server.</b></p>
+
+<p class="MsoNormal"><img border="0" width="576" height="432" src="./Enabling DHCP Relay for ISA Firewall VPN Clients_files/image053.jpg"></p>
+
+<p class="MsoNormal"><b>- Chúc các b&#7841;n thành công.</b></p>
+
+<p class="MsoNormal">&nbsp;</p>
+
+</div>
+
+
+
+
+</body></html>

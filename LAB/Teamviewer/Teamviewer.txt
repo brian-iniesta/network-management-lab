@@ -1,0 +1,10 @@
+﻿1. Mở chương trình Teamviewer, có thể chọn Install hoặc Run
+2. Chấp nhận các điều kiện về bản quyền sản phẩm
+3. Chương trình tự động cấp ID và Password cho máy hiện hành(máy XP1)
+4. Nhập ID của máy cần remote, mình nhập ID của máy XP2(máy XP cũng bật chương trình này lên)
+5. Chọn Remote Control và bấm Connect to Partner
+6. Nhập password của máy cần remote(Password được sinh ra bởi chương trình này), và bấm Logon
+7. Đã remote dc
+8. Đã remote dc
+
+Hình xp2.png cho thấy ID với password của máy XP2
